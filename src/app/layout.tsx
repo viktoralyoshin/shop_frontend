@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Nunito_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
-const nunito = Nunito_Sans({
+const nunito = Inter({
   subsets: ["latin"],
   display: "swap",
-  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
   variable: "--font-nunito",
 });
 
@@ -21,10 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`min-h-screen font-sans antialiased ${nunito.variable}` }
-      >
-        {children}
+      <body className={`min-h-screen font-sans antialiased ${nunito.variable}`}>
+        <main>{children}</main>
+        <Toaster />
       </body>
     </html>
   );

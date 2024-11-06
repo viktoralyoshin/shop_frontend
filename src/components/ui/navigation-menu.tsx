@@ -12,7 +12,7 @@ const NavigationMenu = React.forwardRef<
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={cn(
-      "relative z-10 flex max-w-max flex-1 items-center justify-center text-[16px] font-semibold",
+      "relative z-10 flex max-w-max flex-1 items-center justify-center text-[16px]",
       className
     )}
     {...props}
@@ -50,7 +50,7 @@ const NavigationMenuTrigger = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <NavigationMenuPrimitive.Trigger
     ref={ref}
-    className={cn(navigationMenuTriggerStyle(), "group text-[16px] font-semibold", className)}
+    className={cn(navigationMenuTriggerStyle(), "group text-[16px]", className)}
     {...props}
   >
     {children}{" "}
