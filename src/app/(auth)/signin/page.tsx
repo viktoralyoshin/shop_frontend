@@ -51,13 +51,25 @@ const Page = () => {
   const { toast } = useToast();
   const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     values.phoneNumber = "+7" + unformat(values.phoneNumber, maskOptions);
-    console.table(values);
-    toast({
-      title: "Виктор, вы вошли в аккаунт!",
+    const user = await fetch("http://localhost:5000/api/user/signIn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(values),
     });
-    router.replace("/");
+
+    console.log(user)
+
+    if (user) {
+      toast({
+        title: "Виктор, вы вошли в аккаунт!",
+      });
+      router.replace("/");
+    }
   }
 
   return (

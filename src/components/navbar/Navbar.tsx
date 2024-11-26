@@ -5,7 +5,7 @@ import Menu from "./ui/Menu";
 import User from "./ui/User";
 import { Suspense, useState } from "react";
 import SkeletonUser from "../skeletons/SkeletonUser";
-import { Heart, LogIn, ShoppingBag } from "lucide-react";
+import { Heart, LogIn } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   TooltipProvider,
@@ -14,32 +14,24 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import Cart from "./cart/Cart";
 
-const Navbar = () => {
-  // const [isAuth, setAuth] = useState(true);
-  const isAuth = false;
+const Navbar = async () => {
+
+  const isAuth = true
 
   return (
     <div className="mx-auto max-w-6xl">
       <div className="flex items-center py-4 justify-between">
         <div className="flex items-center gap-4">
-          <Image src="/logo.svg" alt="logo" width={48} height={48} />
+          <Link href="/">
+            <Image src="/logo.svg" alt="logo" width={48} height={48} />
+          </Link>
           <Menu />
         </div>
         {isAuth ? (
           <div className="flex items-center gap-4">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <ShoppingBag />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Корзина</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Cart />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
