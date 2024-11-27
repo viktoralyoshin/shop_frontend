@@ -3,9 +3,6 @@ import Link from "next/link";
 import Icon from "./Icon";
 
 const CategoryList = async () => {
-  const data = await fetch("http://localhost:5000/api/category");
-
-  const categories: ICategory[] = await data.json();
 
   return (
     <div className="flex flex-col space-y-4">

@@ -7,6 +7,5 @@ export interface IProduct {
   price: number;
   categoryId: number;
   quantity: number;
-  rating: number;
   category: ICategory;
 }

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Menu from "./ui/Menu";
 import User from "./ui/User";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import SkeletonUser from "../skeletons/SkeletonUser";
 import { Heart, LogIn } from "lucide-react";
 import { Button } from "../ui/button";

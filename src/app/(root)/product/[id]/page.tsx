@@ -7,12 +7,8 @@ import { Badge } from "@/components/ui/badge";
 const Page = async ({ params }: any) => {
   const { id } = await params;
 
-  const data = await fetch(`http://localhost:5000/api/product/${id}`);
-
-  const product: IProduct = await data.json();
-
   return (
-    <div className="flex flex-col space-y-20 justify-center">
+    <main className="flex flex-col space-y-20 justify-center">
       <div className="flex md:flex-row flex-col gap-4">
         <Image src="/1.webp" alt="alt" width={300} height={300} />
         <div className="space-y-8">
@@ -42,7 +38,7 @@ const Page = async ({ params }: any) => {
         <h1 className="text-[24px] font-semibold">Описание</h1>
         <p>{product.description}</p>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -53,14 +53,6 @@ const Page = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     values.phoneNumber = "+7" + unformat(values.phoneNumber, maskOptions);
-    const user = await fetch("http://localhost:5000/api/user/signIn", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(values),
-    });
 
     console.log(user)
 
