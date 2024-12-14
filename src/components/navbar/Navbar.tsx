@@ -1,10 +1,8 @@
-// "use client";
+"use client";
 
 import Image from "next/image";
 import Menu from "./ui/Menu";
 import User from "./ui/User";
-import { Suspense } from "react";
-import SkeletonUser from "../skeletons/SkeletonUser";
 import { Heart, LogIn } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -15,10 +13,11 @@ import {
 } from "@/components/ui/tooltip";
 import Link from "next/link";
 import Cart from "./cart/Cart";
+import { useAuthStore } from "@/stores/use-auth-store";
+import { useProfile } from "@/hooks/use-profile";
 
-const Navbar = async () => {
-
-  const isAuth = true
+const Navbar = () => {
+  const isAuth = useAuthStore((state) => state.authenticated);
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -35,8 +34,10 @@ const Navbar = async () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Heart />
+                  <Button asChild variant="ghost" size="icon">
+                    <Link href="/wishlist">
+                      <Heart />
+                    </Link>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -44,9 +45,7 @@ const Navbar = async () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <Suspense fallback={<SkeletonUser />}>
-              <User />
-            </Suspense>
+            <User />
           </div>
         ) : (
           <Button asChild className="font-medium flex items-center">

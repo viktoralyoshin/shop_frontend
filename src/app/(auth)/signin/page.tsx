@@ -16,8 +16,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { unformat, useMask } from "@react-input/mask";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { authService } from "@/services/auth.service";
+import { useAuthStore } from "@/stores/use-auth-store";
+import { toast } from "sonner";
+import Link from "next/link";
+import { AxiosError } from "axios";
 
 // const phoneValidation = new RegExp(
 //   /(^8|7|\+7)((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))/
@@ -48,20 +53,37 @@ const Page = () => {
 
   const inputRef = useMask(maskOptions);
 
-  const { toast } = useToast();
-  const router = useRouter();
+  const { push } = useRouter();
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    values.phoneNumber = "+7" + unformat(values.phoneNumber, maskOptions);
+  const setUser = useAuthStore((state) => state.setUser);
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
 
-    console.log(user)
+  const { mutate } = useMutation({
+    mutationKey: ["auth"],
+    mutationFn: (data: z.infer<typeof formSchema>) =>
+      authService.main("login", data),
+    onSuccess(response) {
+      setUser(response.data.user);
+      setAuthentication(true);
+      toast("Вы вошли в аккаунт!");
+      push("/");
+    },
+    onError(error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.data.message === "Invalid password") {
+          toast("Неверный пароль");
+        } else if (error.response?.data.message === "User not found") {
+          toast("Пользователя с таким номером не существует");
+        } else {
+          toast("Попробуйте позже");
+        }
+      }
+    },
+  });
 
-    if (user) {
-      toast({
-        title: "Виктор, вы вошли в аккаунт!",
-      });
-      router.replace("/");
-    }
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    data.phoneNumber = "+7" + unformat(data.phoneNumber, maskOptions);
+    mutate(data);
   }
 
   return (
@@ -110,6 +132,11 @@ const Page = () => {
               </FormItem>
             )}
           />
+          <div>
+            <Link className="text-primary hover:underline" href="/signup">
+              Нет аккаунта? Регистрация
+            </Link>
+          </div>
           <Button type="submit">Войти</Button>
         </form>
       </Form>

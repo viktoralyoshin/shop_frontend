@@ -15,6 +15,7 @@ import { useState } from "react";
 import CartList from "@/components/products/cart-wishlist/CartList";
 import { IProduct } from "@/types/product.types";
 import { Separator } from "@/components/ui/separator";
+import CreateOrder from "./CreateOrder";
 
 const DrawerCart = ({ products }: { products: IProduct[] }) => {
   const [open, setOpen] = useState(false);
@@ -39,7 +40,7 @@ const DrawerCart = ({ products }: { products: IProduct[] }) => {
         </DrawerHeader>
         <div className="flex flex-col space-y-4 w-full justify-center">
           <CartList products={products} />
-          <Separator className="mx-4"/>
+          <Separator className="mx-4" />
           <p className="mx-4">
             Итоговая стоимость:
             {" " +
@@ -50,9 +51,7 @@ const DrawerCart = ({ products }: { products: IProduct[] }) => {
           </p>
         </div>
         <DrawerFooter className="pt-2">
-          <Button>
-            <ShoppingCart /> Оформить заказ
-          </Button>
+          <CreateOrder />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

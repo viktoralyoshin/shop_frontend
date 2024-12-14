@@ -1,7 +1,7 @@
 import { axiosClassic, axiosWithAuth } from "@/api/interceptors";
 import { ICategory } from "@/types/category.types";
-import { IProduct } from "@/types/product.types";
 
+export type TypeCreateCategory = Omit<ICategory, 'id'>
 class CategoryService {
   private BASE_URL = "/category";
 
@@ -17,13 +17,13 @@ class CategoryService {
     return response.data;
   }
 
-  async createCategory() {
-    const response = await axiosWithAuth.post<ICategory>(this.BASE_URL);
+  async createCategory(data: TypeCreateCategory) {
+    const response = await axiosWithAuth.post<ICategory>(this.BASE_URL, data);
     return response.data;
   }
 
   async deleteCategory(id: number) {
-    const response = await axiosWithAuth.post<IProduct>(
+    const response = await axiosWithAuth.post<ICategory>(
       `${this.BASE_URL}/${id}`
     );
     return response.data;

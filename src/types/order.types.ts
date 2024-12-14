@@ -4,6 +4,6 @@ export interface IOrder {
   id: string;
   price: number;
   products: IProduct[];
-  createdAt: Date;
+  createdAt: string;
   userId: string;
 }

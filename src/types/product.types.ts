@@ -8,4 +8,5 @@ export interface IProduct {
   categoryId: number;
   quantity: number;
   category: ICategory;
+  pictureUrl: string;
 }

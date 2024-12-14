@@ -1,3 +1,5 @@
+'use client'
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,12 +9,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import Icon from "../../Icon";
-import { ICategory } from "@/types/category.types";
+import { useCategories } from "@/hooks/use-categories";
 
-const Menu = async () => {
-  const data = await fetch("http://localhost:5000/api/category");
+const Menu = () => {
 
-  const categories: ICategory[] = await data.json();
+  const data = useCategories()
 
   return (
     <NavigationMenu>
@@ -21,7 +22,7 @@ const Menu = async () => {
           <NavigationMenuTrigger>Каталог</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="p-6 flex flex-col items-start gap-4">
-              {categories.map((category: ICategory) => (
+              {data?.map((category) => (
                 <Link href={`/category/${category.id}`} className="flex gap-2 items-center" key={category.id}>
                   <Icon name={category.pictureName} size={20} color="#7c3aed"></Icon>
                   <p>{category.name}</p>

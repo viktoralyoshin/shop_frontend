@@ -23,9 +23,10 @@ class ProductService {
     return response.data;
   }
 
-  async createProduct() {
+  async createProduct(data: any) {
     const response = await axiosWithAuth.post<TypeProductResponse>(
-      this.BASE_URL
+      this.BASE_URL,
+      data
     );
     return response.data;
   }

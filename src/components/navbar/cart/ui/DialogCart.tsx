@@ -20,6 +20,7 @@ import {
 import CartList from "@/components/products/cart-wishlist/CartList";
 import { IProduct } from "@/types/product.types";
 import { Separator } from "@/components/ui/separator";
+import CreateOrder from "./CreateOrder";
 
 const DialogCart = ({ products }: { products: IProduct[] }) => {
   const [open, setOpen] = useState(false);
@@ -55,15 +56,14 @@ const DialogCart = ({ products }: { products: IProduct[] }) => {
         <Separator />
         <p>
           Итоговая стоимость:
-          {" " + new Intl.NumberFormat("ru", {
-            style: "currency",
-            currency: "RUB",
-          }).format(totalPrice)}
+          {" " +
+            new Intl.NumberFormat("ru", {
+              style: "currency",
+              currency: "RUB",
+            }).format(totalPrice)}
         </p>
         <DialogFooter>
-          <Button>
-            <ShoppingCart /> Оформить заказ
-          </Button>
+          <CreateOrder />
         </DialogFooter>
       </DialogContent>
     </Dialog>

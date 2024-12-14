@@ -5,14 +5,22 @@ export enum EnumUserRole {
   admin = "ADMIN",
 }
 
+export interface IUserResponse {
+  id: string;
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  createdAt: string;
+}
+
 export interface IUser {
   id: string;
   phoneNumber: string;
   firstName: string;
   lastName: string;
   role: EnumUserRole;
-  createdAt: Date;
-  orders ?: IOrder[]
+  createdAt: string;
+  orders?: IOrder[];
 }
 
 export interface IAuthResponse {

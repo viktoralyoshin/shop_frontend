@@ -1,5 +1,5 @@
 import { axiosWithAuth } from "@/api/interceptors";
-import { IUser } from "@/types/user.types";
+import { IUser, IUserResponse } from "@/types/user.types";
 
 export interface IProfileResponse {
   user: IUser;
@@ -10,10 +10,22 @@ export interface IProfileResponse {
 }
 
 class UserService {
-  private BASE_URL = "/user/profile";
+  private BASE_URL = "/user";
 
   async getProfile() {
-    const response = await axiosWithAuth.get<IProfileResponse>(this.BASE_URL);
+    const response = await axiosWithAuth.get<IProfileResponse>(
+      `${this.BASE_URL}/profile`
+    );
+    return response.data;
+  }
+
+  async getUsers() {
+    const response = await axiosWithAuth.get<IUserResponse[]>(this.BASE_URL);
+    return response.data;
+  }
+
+  async getUser(id: string) {
+    const response = await axiosWithAuth.get<IUser>(`${this.BASE_URL}/${id}`);
     return response.data;
   }
 }

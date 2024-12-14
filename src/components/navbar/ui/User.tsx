@@ -1,4 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+"use client";
+
+import { useAuthStore } from "@/stores/use-auth-store";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -7,42 +10,59 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, ShoppingBag, User2 } from "lucide-react";
-import UserService from '@/app/services/user.service';
+import { LogOut, User2 } from "lucide-react";
+import { authService } from "@/services/auth.service";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useProfile } from "@/hooks/use-profile";
 
-const User = async () => {
+const User = () => {
+  const data = useProfile();
+  const setUser = useAuthStore((state) => state.setUser);
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
 
-  const user = await UserService.checkAuth();
-  console.log(user)
+  const { push } = useRouter();
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const { mutate } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: () => authService.logout(),
+    onSuccess: () => {
+      setUser({});
+      setAuthentication(false);
+      push("/signin");
+    },
+  });
+
+  const logOut = () => {
+    mutate();
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex items-center space-x-4 rounded-lg cursor-pointer">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>В</AvatarFallback>
+            <AvatarFallback>{data?.user.firstName.charAt(0)}</AvatarFallback>
           </Avatar>
-          <p className="font-semibold md:flex hidden">{user.firstName}</p>
+          <p className="md:flex hidden">
+            {data?.user.firstName} {data?.user.lastName}
+          </p>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>{user.firstName}</DropdownMenuLabel>
+        <DropdownMenuLabel>{data?.user.firstName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <User2 /> Профиль
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <ShoppingBag /> Заказы
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings /> Настройки
+          <Link href="/profile" className="flex items-center gap-2">
+            <User2 /> Профиль
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LogOut /> Выход
+          <span className="flex items-center gap-2" onClick={logOut}>
+            <LogOut /> Выход
+          </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
